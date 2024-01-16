@@ -110,7 +110,7 @@ async function renderPage() {
     } else if (parts.length > 1) {
         if (parts[0] == "posts") {
             const post = parts[1]
-            const url = `/posts/${post}`
+            const url = `posts/${post}`
             renderPost(url)
         }
     } else {
