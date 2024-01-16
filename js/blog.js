@@ -1,6 +1,6 @@
 async function renderPostList() {
-    const postsPromise = fetch("/posts/posts.json")
-    const postsTemplatePromise = fetch("/posts/posts.html")
+    const postsPromise = fetch("posts/posts.json")
+    const postsTemplatePromise = fetch("posts/posts.html")
 
     Promise.all([postsPromise, postsTemplatePromise])
         .then(responses => Promise.all([responses[0].json(), responses[1].text()]))
@@ -23,7 +23,7 @@ async function renderPostList() {
 
 async function renderPost(url) {
     var postPromise = fetch(url)
-    var postsTemplatePromise = fetch("/posts/post.html")
+    var postsTemplatePromise = fetch("posts/post.html")
     Promise.all([postPromise, postsTemplatePromise])
         .then(responses => Promise.all([responses[0].text(), responses[1].text()]))
         .then(responses => {
