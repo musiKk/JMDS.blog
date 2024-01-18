@@ -1,9 +1,12 @@
 {
-    "path": "/",
     "posts": [
         {
             "link": "2024-01-14-hello-world.md",
             "title": "Hello World"
+        },
+        {
+            "link": "2023-12-24-merry-christmas.md",
+            "title": "Merry Christmas"
         }
     ]
 }

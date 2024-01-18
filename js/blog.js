@@ -1,3 +1,33 @@
+class Posts {
+    constructor(posts) {
+        this.posts = posts
+    }
+    getRecents() {
+        const currentYear = new Date().getFullYear()
+        return this.posts.filter(post => post.link.startsWith(currentYear))
+    }
+    getOlderPosts() {
+        const currentYear = new Date().getFullYear()
+        const olderPostsLinear = this.posts.filter(post => !post.link.startsWith(currentYear))
+
+        const postMap = olderPostsLinear.reduce((acc, post) => {
+            const postYear = post.link.substring(0, 4)
+            if (acc[postYear]) {
+                acc[postYear].push(post)
+            } else {
+                acc[postYear] = [post]
+            }
+            if (acc.years.indexOf(postYear) == -1) {
+                acc.years.push(postYear)
+                acc.years.sort((a, b) => b - a)
+            }
+            return acc
+        }, { "years": [] })
+
+        return postMap
+    }
+}
+
 async function renderPostList() {
     const postsPromise = fetch("posts/posts.json")
     const postsTemplatePromise = fetch("posts/posts.html")
@@ -5,18 +35,32 @@ async function renderPostList() {
     Promise.all([postsPromise, postsTemplatePromise])
         .then(responses => Promise.all([responses[0].json(), responses[1].text()]))
         .then(responses => {
-            const posts = responses[0]
+            const posts = new Posts(responses[0].posts)
             const postsTemplate = responses[1]
 
-            const templateContainer = document.getElementById("content")
-            templateContainer.innerHTML = postsTemplate
+            const contentContainer = document.getElementById("content")
+            contentContainer.innerHTML = postsTemplate
 
-            const postsContainer = document.getElementById("template-content")
+            const templateContainer = document.getElementById("template-content")
 
-            posts.posts.forEach(post => {
+            const recentHeading = document.createElement("h2")
+            recentHeading.appendChild(document.createTextNode("Recent Posts"))
+            templateContainer.appendChild(recentHeading)
+
+            posts.getRecents().forEach(post => {
                 const div = document.createElement("div")
                 div.innerHTML = `<a href="#posts/${post.link}">${post.title}</a>`
                 templateContainer.appendChild(div)
+            })
+            posts.getOlderPosts().years.forEach(year => {
+                const yearHeading = document.createElement("h2")
+                yearHeading.appendChild(document.createTextNode(year))
+                templateContainer.appendChild(yearHeading)
+                posts.getOlderPosts()[year].forEach(post => {
+                    const div = document.createElement("div")
+                    div.innerHTML = `<a href="#posts/${post.link}">${post.title}</a>`
+                    templateContainer.appendChild(div)
+                })
             })
         })
 }
@@ -33,9 +77,7 @@ async function renderPost(url) {
             const templateContainer = document.getElementById("content")
             templateContainer.innerHTML = postTemplate
 
-            const div = document.createElement("div")
-            div.innerHTML = renderMarkdown(post)
-            document.getElementById("template-content").appendChild(div)
+            document.getElementById("template-content").innerHTML = renderMarkdown(post)
         })
 
 }

@@ -49,3 +49,8 @@ header a::after {
 #container #content {
     flex: 1;
 }
+
+#blog-title {
+    font-size: 2rem;
+    font-weight: bold;
+}
