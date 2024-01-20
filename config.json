@@ -1,0 +1,12 @@
+{
+    "pages": [
+        {
+            "name": "Posts",
+            "template": "posts.html"
+        },
+        {
+            "name": "About",
+            "template": "about.md"
+        }
+    ]
+}

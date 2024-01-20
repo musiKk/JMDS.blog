@@ -30,7 +30,7 @@ class Posts {
 
 async function renderPostList() {
     const postsPromise = fetch("posts/posts.json")
-    const postsTemplatePromise = fetch("posts/posts.html")
+    const postsTemplatePromise = fetch("templates/posts.html")
 
     Promise.all([postsPromise, postsTemplatePromise])
         .then(responses => Promise.all([responses[0].json(), responses[1].text()]))
@@ -133,7 +133,8 @@ function renderMarkdown(text) {
         line = line.replaceAll(/\*\*([^*]*)\*\*/g, "<b>$1</b>")
         line = line.replaceAll(/\*([^*]*)\*/g, "<i>$1</i>")
         line = line.replaceAll(/_([^_]*)_/g, "<u>$1</u>")
-        line = line.replaceAll(/\[([^\]]*)\]\(([^\)]*)\)/g, "<a href=\"$2\">$1</a>")
+        line = line.replaceAll(/(?<!!)\[([^\]]*)\]\(([^\)]*)\)/g, "<a href=\"$2\">$1</a>")
+        line = line.replaceAll(/!\[([^\]]*)\]\(([^\)]*)\)/g, "<img src=\"$2\" alt=\"$1\">")
 
         output = additionalOutput.concat(line)
 
@@ -141,30 +142,87 @@ function renderMarkdown(text) {
     }).join("")
 }
 
+async function renderTemplate(templateConfig) {
+    fetch(`templates/${templateConfig.template}`)
+        .then(response => response.text())
+        .then(response => {
+            if (templateConfig.template.endsWith(".html")) {
+                const contentContainer = document.getElementById("content")
+                contentContainer.innerHTML = response
+            } else if (templateConfig.template.endsWith(".md")) {
+                const contentContainer = document.getElementById("content")
+                contentContainer.innerHTML = renderMarkdown(response)
+            }
+        })
+}
+
+async function initPage() {
+    const configuration = window.config
+
+    const linkContainer = document.querySelector("#container header")
+    configuration.pages.forEach(page => {
+        const pageLink = document.createElement("a")
+
+        const anchor = page.name.toLowerCase().replaceAll(" ", "-")
+        page.anchor = anchor
+
+        pageLink.setAttribute("href", "#" + anchor)
+        pageLink.innerHTML = page.name
+
+        linkContainer.appendChild(pageLink)
+    })
+    if (!configuration.defaultPageAnchor) {
+        configuration.defaultPageAnchor = configuration.pages[0].anchor
+    }
+}
+
 async function renderPage() {
     const hash = window.location.hash.substring(1)
     const parts = hash.split("/")
+
+    if (parts.length == 0) {
+        window.location.hash = window.config.defaultPageAnchor
+        return
+    }
+
+    const pageAnchor = parts[0]
+    const pageFromConfigCandidates = window.config.pages.filter(page => page.anchor == pageAnchor)
+    if (pageFromConfigCandidates.length == 0) {
+        window.location.hash = window.config.defaultPageAnchor
+        return
+    }
+
+    const pageFromConfig = pageFromConfigCandidates[0]
+
     if (parts.length == 1) {
-        if (parts[0] == "posts") {
+        if (pageAnchor == "posts") {
             renderPostList()
+        } else {
+            renderTemplate(pageFromConfig)
         }
-        window.location.hash = "posts"
     } else if (parts.length > 1) {
         if (parts[0] == "posts") {
+            // need to tread a post differently
             const post = parts[1]
             const url = `posts/${post}`
             renderPost(url)
+        } else {
+            // don't know what to do 🤷‍♂️
+            renderTemplate(pageFromConfig.template)
         }
-    } else {
-        window.location.hash = "posts"
     }
 }
 function start() {
+    fetch("config.json")
+        .then(response => window.config = response.json())
+        .then(response => {
+            window.config = response
+            initPage()
+        }).then(_ => renderPage())
+
     window.addEventListener("hashchange", (event) => {
         renderPage()
     })
-    console.log(document.hashchange)
-    renderPage()
 }
 
 document.addEventListener("DOMContentLoaded", start)

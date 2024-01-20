@@ -38,7 +38,6 @@ a:hover {
 
 header a {
     display: block;
-    margin-bottom: 1rem;
     padding: 0.5rem;
 }
 
@@ -53,4 +52,8 @@ header a::after {
 #blog-title {
     font-size: 2rem;
     font-weight: bold;
+}
+
+#content img {
+    max-width: 100%;
 }
