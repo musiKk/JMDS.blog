@@ -23,13 +23,61 @@ Currently there is not much of an install besides cloning the repo and get going
 
 ## Customization
 
-There is not a lot to adjust. Currently the HTML templates are
+There is limited support for custom pages. Pages are defined in the configuration as follows:
 
-| template | what it does |
-| -------- | - |
-| index.html       | The main layout for the whole page. |
-| posts/posts.html | The layout for the post listing. |
-| posts/post.html  | The layout for a single post. |
+```json
+{
+    "pages": [
+        {
+            "name": "Posts",
+            "template": "posts.html"
+        },
+        {
+            "name": "About",
+            "template": "about.html"
+        },
+        {
+            "name": "My Projects",
+            "template": "my-projects.md"
+        },
+    ]
+}
+```
+
+If the `template` link ends in `html`, the page is rendered as is into the main page's content element. If the link ends in `md`, the page will be run through the Markdown processor first.
+
+## Posts
+
+Posts are handled specially. They are split across two templates; both with an element of ID `template-content` respecitvely.
+
+| template | what's in `template-content` |
+| - | - |
+| `templates/posts.html` | the list of posts |
+| `posts/post.html` | the content of the post |
+
+Posts are taken from the `posts/posts.json` file. Take a gander:
+
+```json
+{
+    "posts": [
+        {
+            "link": "2028-02-22-from-teh-future.html",
+            "title": "Time travel is possible"
+        }
+    ]
+}
+```
+
+The link is relative to the `posts` directory. I guess in theory this would allow subfolders but for now this is not possible. Maybe later. The title is only used for the post list. The link must be in the format YYYY-MM-DD-mah-title. This will be used for grouping. Everything from the current year is rendered into a "Recent posts" section. Post order is determined by the order in the `posts.json` file but this is just laziness and will change probably.
+
+## Index
+
+The index is at the root in an `index.html` file. It needs elements with the following IDs:
+
+| ID | what for |
+| - | - |
+| `header` | links to templates are rendered here |
+| `content` | templates are rendered here |
 
 The templates have no restriction except
 

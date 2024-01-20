@@ -31,17 +31,17 @@ a:hover {
     display: flex;
 }
 
-#container header {
+#header {
     width: 5rem;
     margin: 1rem;
 }
 
-header a {
+#header a {
     display: block;
     padding: 0.5rem;
 }
 
-header a::after {
+#header a::after {
     margin-bottom: 1rem;
 }
 

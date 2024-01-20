@@ -159,7 +159,7 @@ async function renderTemplate(templateConfig) {
 async function initPage() {
     const configuration = window.config
 
-    const linkContainer = document.querySelector("#container header")
+    const linkContainer = document.getElementById("header")
     configuration.pages.forEach(page => {
         const pageLink = document.createElement("a")
 
