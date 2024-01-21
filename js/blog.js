@@ -111,6 +111,8 @@ function renderMarkdown(text) {
             return []
         }
 
+        line = line.replaceAll(/ ?> (.*)/g, "<blockquote>$1</blockquote>")
+
         additionalOutput = Array()
         if (line == "") {
             line = "<p>"

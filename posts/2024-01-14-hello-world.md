@@ -1,5 +1,9 @@
 # Hello World
 
+> One small blog for me, but a giant blog for mankind.
+
+&mdash;Abraham Lincoln
+
 This is the first post of my new blogging system. Let's test some Markdown features:
 
 * a list with one
