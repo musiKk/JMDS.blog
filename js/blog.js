@@ -133,7 +133,8 @@ function renderMarkdown(text) {
         line = line.replaceAll(/\*\*([^*]*)\*\*/g, "<b>$1</b>")
         line = line.replaceAll(/\*([^*]*)\*/g, "<i>$1</i>")
         line = line.replaceAll(/_([^_]*)_/g, "<u>$1</u>")
-        line = line.replaceAll(/(?<!!)\[([^\]]*)\]\(([^\)]*)\)/g, "<a href=\"$2\">$1</a>")
+        line = line.replaceAll(/(?<!!)\[([^\]]*)\]\((http[^\)]*)\)/g, "<a target=\"_blank\" href=\"$2\">$1</a>")
+        line = line.replaceAll(/(?<!!)\[([^\]]*)\]\(([^\)]*)\)/g, "<a href=\"#$2\">$1</a>")
         line = line.replaceAll(/!\[([^\]]*)\]\(([^\)]*)\)/g, "<img src=\"$2\" alt=\"$1\">")
 
         output = additionalOutput.concat(line)
