@@ -101,3 +101,6 @@ There is also a `css/blog.css` but I don't know CSS so it currently looks like s
 ## Credit
 
 Credit where credit is due. JMDS is **heavily** inspired by [CMS.js](https://github.com/chrisdiana/cms.js). But I suffer from NIH. Oh and ChatGPT of course.
+
+- [Box arrow up-right from Bootstrap](https://icons.getbootstrap.com/icons/box-arrow-up-right/) under MIT license
+- corresponding CSS snippet from [Christian Oliff](https://christianoliff.com/blog/styling-external-links-with-an-icon-in-css/)
