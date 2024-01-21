@@ -156,18 +156,39 @@ async function renderTemplate(templateConfig) {
         })
 }
 
+function makeTemplateLink(page) {
+    const pageLink = document.createElement("a")
+
+    const anchor = page.name.toLowerCase().replaceAll(" ", "-")
+    page.anchor = anchor
+
+    pageLink.setAttribute("href", "#" + anchor)
+    pageLink.innerHTML = page.name
+
+    return pageLink
+}
+
+function makeUrlLink(page) {
+    const urlLink = document.createElement("a")
+
+    urlLink.setAttribute("href", page.url)
+    urlLink.setAttribute("target", "_blank")
+    urlLink.innerHTML = page.name
+
+    return urlLink
+}
+
 async function initPage() {
     const configuration = window.config
 
     const linkContainer = document.getElementById("header")
     configuration.pages.forEach(page => {
-        const pageLink = document.createElement("a")
-
-        const anchor = page.name.toLowerCase().replaceAll(" ", "-")
-        page.anchor = anchor
-
-        pageLink.setAttribute("href", "#" + anchor)
-        pageLink.innerHTML = page.name
+        var pageLink
+        if (page.template) {
+            pageLink = makeTemplateLink(page)
+        } else if (page.url) {
+            pageLink = makeUrlLink(page)
+        }
 
         linkContainer.appendChild(pageLink)
     })

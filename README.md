@@ -23,7 +23,7 @@ Currently there is not much of an install besides cloning the repo and get going
 
 ## Customization
 
-There is limited support for custom pages. Pages are defined in the configuration as follows:
+There is limited support for a custom menu. Menu items are defined in the configuration as follows:
 
 ```json
 {
@@ -40,11 +40,23 @@ There is limited support for custom pages. Pages are defined in the configuratio
             "name": "My Projects",
             "template": "my-projects.md"
         },
+        {
+            "name": "Knowledge",
+            "url": "https://en.wikipedia.org"
+        }
     ]
 }
 ```
 
-If the `template` link ends in `html`, the page is rendered as is into the main page's content element. If the link ends in `md`, the page will be run through the Markdown processor first.
+The properties define the type of menu entry.
+
+### Templates
+
+If the object contains a `template` property, it's refers to a template that is in the `templates` folder. If the `template` link ends in `html`, the page is rendered as is into the main page's content element. If the link ends in `md`, the page will be run through the Markdown processor first.
+
+### URLs
+
+If the objct contains a `url` property, it's a link to an external site. The site will be opened in a new tab.
 
 ## Posts
 
