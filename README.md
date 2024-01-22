@@ -73,7 +73,7 @@ Posts are taken from the `posts/posts.json` file. Take a gander:
 {
     "posts": [
         {
-            "link": "2028-02-22-from-teh-future.html",
+            "link": "2028-02-22-from-teh-future.md",
             "title": "Time travel is possible"
         }
     ]
@@ -91,10 +91,10 @@ The index is at the root in an `index.html` file. It needs elements with the fol
 | `header` | links to templates are rendered here |
 | `content` | templates are rendered here |
 
-The templates have no restriction except
+The index has no restrictions except
 
-* they need an element with ID `content`; it will contain the content
-* the `index.html` has to load the `js/blog.js` script, duh
+* it needs an element with ID `content`; it will contain the content
+* it has to load the `js/blog.js` script, duh
 
 There is also a `css/blog.css` but I don't know CSS so it currently looks like shit. 🤷‍♂️
 
