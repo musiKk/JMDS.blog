@@ -130,7 +130,7 @@ function renderMarkdown(text) {
             }
         }
 
-        line = line.replaceAll(/^# (.*)$/mg, "<h1>$1</h1>")
+        line = line.replaceAll(/^(#+) (.*)$/mg, (_, level, heading) => `<h${level.length}>${heading}</h${level.length}>`)
         line = line.replaceAll(/`([^`]*)`/g, "<code>$1</code>")
         line = line.replaceAll(/\*\*([^*]*)\*\*/g, "<b>$1</b>")
         line = line.replaceAll(/\*([^*]*)\*/g, "<i>$1</i>")
